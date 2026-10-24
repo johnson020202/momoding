@@ -9,6 +9,7 @@ import android.graphics.Path
 import android.os.Build
 import android.view.accessibility.AccessibilityNodeInfo
 import com.openminis.app.R
+import com.openminis.app.accessibility.AccessibilityState
 import com.openminis.app.accessibility.MinisAccessibilityService
 import com.openminis.app.data.model.AgentContentPart
 import com.openminis.app.data.model.LLMMessage
@@ -151,8 +152,20 @@ class HandsOperator(private val context: Context) {
         capsule.onDeny = { ownPendingRequest()?.let { RiskGate.decide(it.id, RiskDecision.DENY) } }
         val started = System.currentTimeMillis()
         try {
+            // [momoding-a11y-grant-vs-binding] Tell "not granted" apart from "granted but this
+            // process is not bound yet": the second is a short race after a start, and asking the
+            // person to enable a switch that is already on sends them in circles.
             val svc = MinisAccessibilityService.getInstance()
-                ?: return finish(Outcome.Failed("the accessibility service is not running"), steps, runId, lastScreen, traceDir, log, model?.label)
+                ?: return finish(
+                    Outcome.Failed(
+                        if (AccessibilityState.isGranted(context)) {
+                            "the accessibility service is enabled but not connected yet; try again in a few seconds (if it keeps happening, switch Momoding off and on under Settings → Accessibility)"
+                        } else {
+                            "the accessibility service is not running"
+                        }
+                    ),
+                    steps, runId, lastScreen, traceDir, log, model?.label,
+                )
             if (Build.VERSION.SDK_INT < Hands.MIN_SDK) {
                 return finish(Outcome.Failed("screenshots need Android 11"), steps, runId, lastScreen, traceDir, log, model?.label)
             }

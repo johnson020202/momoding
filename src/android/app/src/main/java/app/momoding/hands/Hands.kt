@@ -7,7 +7,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.provider.Settings
 import com.openminis.app.MinisApp
-import com.openminis.app.accessibility.MinisAccessibilityService
+import com.openminis.app.accessibility.AccessibilityState
 import com.openminis.app.data.model.ModelEntry
 import com.openminis.app.data.model.ProviderInstance
 import com.openminis.app.data.model.hasImageInput
@@ -66,9 +66,21 @@ object Hands {
 
     // ── readiness ──────────────────────────────────────────────────────────
 
+    /**
+     * [momoding-a11y-grant-vs-binding] `serviceOn` is the *grant* (whether the user has enabled
+     * the service in Settings), not whether this process happens to hold an instance: a cold
+     * start, a force-stop restart or an OEM kill leaves the grant in place with no instance yet,
+     * and the page then told people to switch on a switch that was already on.
+     *
+     * `serviceReady` is the stricter "we can touch the screen right now". It is false only for a
+     * moment while the framework is rebinding, so it is reported, not used to call the service
+     * off. `ready` follows the grant, because a run started right after the reboot will find the
+     * instance by the time it needs it.
+     */
     data class Readiness(
         val androidOk: Boolean,
         val serviceOn: Boolean,
+        val serviceReady: Boolean,
         val overlayOk: Boolean,
         val model: ScreenModel?,
     ) {
@@ -77,7 +89,8 @@ object Hands {
 
     fun readiness(context: Context): Readiness = Readiness(
         androidOk = Build.VERSION.SDK_INT >= MIN_SDK,
-        serviceOn = MinisAccessibilityService.getInstance() != null,
+        serviceOn = AccessibilityState.isGranted(context),
+        serviceReady = AccessibilityState.isConnected(),
         overlayOk = Settings.canDrawOverlays(context),
         model = screenModel(context),
     )

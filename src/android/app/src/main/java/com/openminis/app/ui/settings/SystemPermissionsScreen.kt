@@ -42,6 +42,7 @@ import androidx.compose.ui.res.stringResource
 import com.openminis.app.R
 import com.openminis.app.ui.components.MinisTextButton
 import com.openminis.app.accessibility.AccessibilityRecoveryManager
+import com.openminis.app.accessibility.AccessibilityState
 import com.openminis.app.accessibility.MinisAccessibilityService
 import com.openminis.app.accessibility.RestrictedSettingsManager
 import com.openminis.app.offload.ShizukuManager
@@ -60,7 +61,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun SystemPermissionsScreen(onBack: () -> Unit) {
     val context = LocalContext.current
-    var a11yEnabled by remember { mutableStateOf(isAccessibilityEnabled(context)) }
+    var a11yEnabled by remember { mutableStateOf(AccessibilityState.isGranted(context)) }
     // [T-android-a11y-miui-service-failure] "Service failed" degraded state:
     // the OEM ROM (MIUI etc.) reports the service as enabled in Settings but
     // has killed the process / revoked the binding, so getInstance() is null.
@@ -88,9 +89,10 @@ fun SystemPermissionsScreen(onBack: () -> Unit) {
 
     LaunchedEffect(Unit) {
         while (true) {
-            val inSettings = isAccessibilityEnabled(context)
-            val connected = MinisAccessibilityService.getInstance() != null
-            a11yEnabled = inSettings || connected
+            // [momoding-a11y-grant-vs-binding] Same reading as Hands: the grant, then the binding.
+            val inSettings = AccessibilityState.listedInSettings(context)
+            val connected = AccessibilityState.isConnected()
+            a11yEnabled = AccessibilityState.isGranted(context)
             a11yDegraded = inSettings && !connected
             // Only claim "revoked" once the user has actually granted it at
             // least once — otherwise a first-run user who has never enabled the
@@ -362,15 +364,6 @@ fun SystemPermissionsScreen(onBack: () -> Unit) {
             }
         }
     }
-}
-
-private fun isAccessibilityEnabled(context: Context): Boolean {
-    val expected = "${context.packageName}/${MinisAccessibilityService::class.java.name}"
-    val enabled = Settings.Secure.getString(
-        context.contentResolver,
-        Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES,
-    ) ?: return false
-    return enabled.split(':').any { it.equals(expected, ignoreCase = true) }
 }
 
 private fun openAccessibilitySettings(context: Context) {

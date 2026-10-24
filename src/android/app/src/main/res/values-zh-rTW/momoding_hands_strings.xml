@@ -29,6 +29,7 @@
     <string name="mo_hands_model_footer">每一步把螢幕上的內容列表（按鈕、輸入框、文字）發給這個模型，列表不夠時再加一張截圖。它和對話模型是兩個獨立的設定。</string>
     <string name="mo_hands_need_a11y">無障礙服務</string>
     <string name="mo_hands_need_a11y_fix">到無障礙設定裡「已安裝的應用程式」中打開 Momoding</string>
+    <string name="mo_hands_need_a11y_connecting">已開啟，系統正在連線（幾秒）</string>
     <string name="mo_hands_need_android">Android 11 或更新</string>
     <string name="mo_hands_need_android_sub">這台手機系統太舊，無障礙服務拿不到截圖。</string>
     <string name="mo_hands_need_granted">已允許</string>

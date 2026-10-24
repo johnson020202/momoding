@@ -45,6 +45,9 @@ class HandsOffloadHandler(private val context: Context) : NativeOffloadHandler {
             .put("ready", r.ready)
             .put("android_11_or_newer", r.androidOk)
             .put("accessibility_service", r.serviceOn)
+            // [momoding-a11y-grant-vs-binding] the grant above can be true a moment before the
+            // instance exists; this says whether a run would find it now.
+            .put("accessibility_connected", r.serviceReady)
             .put("draw_over_apps", r.overlayOk)
             .put("screen_model", r.model?.let { JSONObject().put("model", it.modelId).put("provider", it.instance.label) } ?: JSONObject.NULL)
             .put("running", Hands.active.value)

@@ -29,6 +29,7 @@
     <string name="mo_hands_model_footer">Each step sends this model the list of what is on the screen (buttons, fields, text), and a screenshot when the list is not enough. It is a setting apart from the chat model.</string>
     <string name="mo_hands_need_a11y">Accessibility service</string>
     <string name="mo_hands_need_a11y_fix">Turn on Momoding under Installed apps in the accessibility settings</string>
+    <string name="mo_hands_need_a11y_connecting">Enabled but not connected yet; waiting for the system to connect it (~a few seconds)</string>
     <string name="mo_hands_need_android">Android 11 or newer</string>
     <string name="mo_hands_need_android_sub">This phone is older; screenshots are not available to the service.</string>
     <string name="mo_hands_need_granted">Allowed</string>

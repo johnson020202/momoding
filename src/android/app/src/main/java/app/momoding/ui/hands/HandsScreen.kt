@@ -119,12 +119,20 @@ fun HandsScreen(onBack: () -> Unit, onOpenProviders: () -> Unit, onOpenHandsMode
             header = stringResource(R.string.mo_hands_section_needs),
             footer = if (visionEntries.isEmpty()) stringResource(R.string.mo_cap_hands_unavailable) else stringResource(R.string.mo_hands_needs_footer),
         ) {
+            // [momoding-a11y-grant-vs-binding] `ok` is the grant, so the row says "on" the moment
+            // the switch in Settings is on. A granted-but-not-yet-bound service is a different
+            // line ("connecting"), never "go turn it on" — that sent people back to a switch that
+            // was already on.
             NeedRow(
                 icon = Icons.Outlined.Accessibility,
                 title = stringResource(R.string.mo_hands_need_a11y),
                 ok = readiness.serviceOn,
                 okText = stringResource(R.string.mo_hands_need_on),
-                fixText = stringResource(R.string.mo_hands_need_a11y_fix),
+                fixText = if (readiness.serviceOn && !readiness.serviceReady) {
+                    stringResource(R.string.mo_hands_need_a11y_connecting)
+                } else {
+                    stringResource(R.string.mo_hands_need_a11y_fix)
+                },
                 onFix = { openAccessibilitySettings(context) },
             )
             NeedRow(
