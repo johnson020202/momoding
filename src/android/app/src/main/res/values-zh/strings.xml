@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Momoding</string>
+    <string name="app_name">Momoding 改版</string>
     <string name="new_chat">新对话</string>
     <string name="settings">设置</string>
     <string name="providers">AI 服务商</string>
@@ -1668,7 +1668,7 @@
     <string name="system_permissions_a11y_restricted_shizuku_sub">一键解除，无需离开 Momoding</string>
     <string name="system_permissions_a11y_restricted_working">正在解除…</string>
     <string name="system_permissions_a11y_restricted_failed">解除失败 — 请按下方步骤手动操作</string>
-    <string name="a11y_service_label">Momoding 操作屏幕</string>
+    <string name="a11y_service_label">Momoding 改版 操作屏幕</string>
     <string name="a11y_service_description">开启后，你交代的事需要用到别的 App 时，Momoding 能看到屏幕上的内容，替你点按、滑动和输入。操作时屏幕顶部有个胶囊，显示每一步和“停止”按钮；登录、密码、验证码永远留给你自己输。随时可以在这里关掉。</string>
     <string name="a11y_service_summary">替你在其他 App 里看屏幕、点按和输入</string>
     <string name="back">返回</string>

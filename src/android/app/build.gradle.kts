@@ -33,7 +33,12 @@ android {
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "app.momoding" // momoding: own id; the Kotlin namespace stays com.openminis.app to keep upstream merges small
+        // momoding: own id; the Kotlin namespace stays com.openminis.app to keep upstream merges small.
+        // Fork build: a separate id so this APK installs beside the official app.momoding
+        // instead of colliding with it (the two use different signing keys, so the system
+        // refuses to upgrade one in place with the other). Override with -PforkApplicationId=…
+        val forkApplicationId = (findProperty("forkApplicationId") as String?) ?: "app.momoding.fork"
+        applicationId = forkApplicationId
         minSdk = 26
         targetSdk = 35
         // momoding: own numbering from 1.0.0 (1.0 preview); the update check compares x.y.z only
@@ -94,8 +99,8 @@ android {
     buildTypes {
         getByName("debug") {
             buildConfigField("boolean", "DEV_TOOLS", "true")
-            // momoding: debug builds install as app.momoding.dev, beside a release (or an older
-            // Momoding build) that holds app.momoding with another signing key
+            // momoding: debug builds install as <applicationId>.dev, beside the release build
+            // of this same fork (and beside the official app.momoding)
             applicationIdSuffix = ".dev"
         }
         // `perf`: the debug variant minus android:debuggable. ART refuses to

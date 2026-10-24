@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Momoding</string>
+    <string name="app_name">Momoding Fork</string>
     <string name="new_chat">New Chat</string>
     <string name="settings">Settings</string>
     <string name="providers">Providers</string>
@@ -1831,7 +1831,7 @@
     <string name="system_permissions_a11y_restricted_shizuku_sub">One tap — clears the flag without leaving Momoding</string>
     <string name="system_permissions_a11y_restricted_working">Allowing…</string>
     <string name="system_permissions_a11y_restricted_failed">Failed — use the manual steps below</string>
-    <string name="a11y_service_label">Momoding · Use the screen</string>
+    <string name="a11y_service_label">Momoding Fork · Use the screen</string>
     <string name="a11y_service_description">Lets Momoding use other apps for you when a task needs them: it sees what is on the screen and taps, swipes and types. A capsule at the top shows each step with a Stop button. Sign-ins, passwords and codes are always left to you. You can turn this off here at any time.</string>
     <string name="a11y_service_summary">Sees the screen and taps for you in other apps</string>
     <string name="back">Back</string>
